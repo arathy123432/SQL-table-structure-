@@ -1,0 +1,22 @@
+===== Raw Sales Data =====
+         date   product  quantity_sold  price
+0  2025-01-05    Apples            100    0.5
+1  2025-01-08   Bananas             80    0.3
+2  2025-02-03    Apples            120    0.5
+3  2025-02-10  Cherries             60    1.0
+4  2025-03-01   Bananas            150    0.3
+5  2025-03-15  Cherries             90    1.0
+
+===== Total Summary =====
+Total Quantity Sold: 600
+Total Revenue: $320.00
+
+===== Product Summary =====
+Product: Bananas, Qty Sold: 230, Revenue: $69.00
+Product: Apples, Qty Sold: 220, Revenue: $110.00
+Product: Cherries, Qty Sold: 150, Revenue: $150.00
+
+===== Monthly Summary =====
+Month: 2025-01, Qty Sold: 180, Revenue: $74.00
+Month: 2025-02, Qty Sold: 180, Revenue: $120.00
+Month: 2025-03, Qty Sold: 240, Revenue: $126.00
