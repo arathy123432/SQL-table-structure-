@@ -1,0 +1,6 @@
+CREATE TABLE sales_data (
+    date TEXT,
+    product TEXT,
+    quantity_sold INTEGER,
+    price REAL
+);
