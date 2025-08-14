@@ -1,0 +1,27 @@
+Objective
+To create a small SQLite database in Python and run queries to get:
+
+Total quantity sold
+
+Total revenue
+
+Product-wise sales summary
+
+Monthly-wise sales summary
+
+Steps
+Created an in-memory SQLite database using sqlite3 for quick testing.
+
+Defined a table schema with columns: date, product, quantity_sold, price.
+
+Inserted sample sales data manually.
+
+Wrote SQL queries for:
+
+Overall totals (SUM)
+
+Group by Product
+
+Group by Month using strftime('%Y-%m', date)
+
+Displayed results in the terminal and optionally using Pandas for tabular formatting.
