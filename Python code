@@ -1,0 +1,78 @@
+import sqlite3
+import pandas as pd
+
+# Connect to in-memory SQLite database
+conn = sqlite3.connect(":memory:")
+cursor = conn.cursor()
+
+# Create table
+cursor.execute("""
+CREATE TABLE sales_data (
+    date TEXT,
+    product TEXT,
+    quantity_sold INTEGER,
+    price REAL
+)
+""")
+
+# Insert sample data
+sales = [
+    ("2025-01-05", "Apples", 100, 0.5),
+    ("2025-01-08", "Bananas", 80, 0.3),
+    ("2025-02-03", "Apples", 120, 0.5),
+    ("2025-02-10", "Cherries", 60, 1.0),
+    ("2025-03-01", "Bananas", 150, 0.3),
+    ("2025-03-15", "Cherries", 90, 1.0)
+]
+cursor.executemany("INSERT INTO sales_data VALUES (?, ?, ?, ?)", sales)
+conn.commit()
+
+# 1. Total quantity sold and total revenue
+cursor.execute("""
+SELECT SUM(quantity_sold) AS total_qty,
+       SUM(quantity_sold * price) AS total_revenue
+FROM sales_data
+""")
+total_summary = cursor.fetchone()
+
+# 2. Sales by product
+cursor.execute("""
+SELECT product, SUM(quantity_sold) AS qty_sold,
+       SUM(quantity_sold * price) AS revenue
+FROM sales_data
+GROUP BY product
+ORDER BY qty_sold DESC
+""")
+product_summary = cursor.fetchall()
+
+# 3. Sales by month
+cursor.execute("""
+SELECT strftime('%Y-%m', date) AS month,
+       SUM(quantity_sold) AS qty_sold,
+       SUM(quantity_sold * price) AS revenue
+FROM sales_data
+GROUP BY month
+ORDER BY month
+""")
+monthly_summary = cursor.fetchall()
+
+# Convert to pandas for better formatting (optional)
+df_sales = pd.read_sql_query("SELECT * FROM sales_data", conn)
+
+# Display results
+print("\n===== Raw Sales Data =====")
+print(df_sales)
+print("\n===== Total Summary =====")
+print(f"Total Quantity Sold: {total_summary[0]}")
+print(f"Total Revenue: ${total_summary[1]:.2f}")
+
+print("\n===== Product Summary =====")
+for row in product_summary:
+    print(f"Product: {row[0]}, Qty Sold: {row[1]}, Revenue: ${row[2]:.2f}")
+
+print("\n===== Monthly Summary =====")
+for row in monthly_summary:
+    print(f"Month: {row[0]}, Qty Sold: {row[1]}, Revenue: ${row[2]:.2f}")
+
+# Close connection
+conn.close()
